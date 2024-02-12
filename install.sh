@@ -501,20 +501,19 @@ function install_ycm()
             echo "##########################################"
             sed -i "273ilet g:ycm_clangd_binary_path='/usr/bin/clang'" ~/.vimrc
             git submodule update --init --recursive
-            python3 ./install.py --all --verbose
+            python3 ./install.py --clang-completer --verbose
             return
         fi
     } || {
         git submodule update --init --recursive
-        python3 ./install.py --clang-completer
+        python3 ./install.py --clang-completer --verbose
     } || {
         echo "##########################################"
         echo "Build error, trying rebuild without Clang."
         echo "##########################################"
         git submodule update --init --recursive
-        python3 ./install.py --all --verbose
+        python3 ./install.py --clang-completer --verbose
     }
-
 }
 
 # 在android上安装ycm插件
