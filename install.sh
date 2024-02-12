@@ -500,15 +500,18 @@ function install_ycm()
             echo "Apline Build, need without GLIBC."
             echo "##########################################"
             sed -i "273ilet g:ycm_clangd_binary_path='/usr/bin/clang'" ~/.vimrc
+            git submodule update --init --recursive
             python3 ./install.py --all --verbose
             return
         fi
     } || {
+        git submodule update --init --recursive
         python3 ./install.py --clang-completer
     } || {
         echo "##########################################"
         echo "Build error, trying rebuild without Clang."
         echo "##########################################"
+        git submodule update --init --recursive
         python3 ./install.py --all --verbose
     }
 
