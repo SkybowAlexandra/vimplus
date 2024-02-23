@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # 获取linux发行版名称
-function get_linux_distro()
-{
+function get_linux_distro() {
     if grep -Eq "Ubuntu" /etc/*-release; then
         echo "Ubuntu"
     elif grep -Eq "Deepin" /etc/*-release; then
@@ -41,15 +40,13 @@ function get_linux_distro()
 }
 
 # 获取日期
-function get_datetime()
-{
+function get_datetime() {
     time=$(date "+%Y%m%d%H%M%S")
     echo $time
 }
 
 # 判断文件是否存在
-function is_exist_file()
-{
+function is_exist_file() {
     filename=$1
     if [ -f $filename ]; then
         echo 1
@@ -59,8 +56,7 @@ function is_exist_file()
 }
 
 # 判断目录是否存在
-function is_exist_dir()
-{
+function is_exist_dir() {
     dir=$1
     if [ -d $dir ]; then
         echo 1
@@ -70,8 +66,7 @@ function is_exist_dir()
 }
 
 #备份原有的.vimrc文件
-function backup_vimrc_file()
-{
+function backup_vimrc_file() {
     old_vimrc=$HOME"/.vimrc"
     is_exist=$(is_exist_file $old_vimrc)
     if [ $is_exist == 1 ]; then
@@ -85,8 +80,7 @@ function backup_vimrc_file()
 }
 
 #备份原有的.vimrc.custom.plugins文件
-function backup_vimrc_custom_plugins_file()
-{
+function backup_vimrc_custom_plugins_file() {
     old_vimrc_plugins=$HOME"/.vimrc.custom.plugins"
     is_exist=$(is_exist_file $old_vimrc_plugins)
     if [ $is_exist == 1 ]; then
@@ -100,8 +94,7 @@ function backup_vimrc_custom_plugins_file()
 }
 
 #备份原有的.vimrc.custom.config文件
-function backup_vimrc_custom_config_file()
-{
+function backup_vimrc_custom_config_file() {
     old_vimrc_config=$HOME"/.vimrc.custom.config"
     is_exist=$(is_exist_file $old_vimrc_config)
     if [ $is_exist == 1 ]; then
@@ -115,8 +108,7 @@ function backup_vimrc_custom_config_file()
 }
 
 #备份原有的.vim目录
-function backup_vim_dir()
-{
+function backup_vim_dir() {
     old_vim=$HOME"/.vim"
     is_exist=$(is_exist_dir $old_vim)
     if [ $is_exist == 1 ]; then
@@ -130,8 +122,7 @@ function backup_vim_dir()
 }
 
 # 备份原有的.vimrc和.vim
-function backup_vimrc_and_vim()
-{
+function backup_vimrc_and_vim() {
     backup_vimrc_file
     backup_vimrc_custom_plugins_file
     backup_vimrc_custom_config_file
@@ -139,8 +130,7 @@ function backup_vimrc_and_vim()
 }
 
 # 获取ubuntu版本
-function get_ubuntu_version()
-{
+function get_ubuntu_version() {
     line=$(cat /etc/lsb-release | grep "DISTRIB_RELEASE")
     arr=(${line//=/ })
     version=(${arr[1]//./ })
@@ -149,23 +139,20 @@ function get_ubuntu_version()
 }
 
 # 获取alpine版本
-function get_alpine_version()
-{
+function get_alpine_version() {
     version=$(cat /etc/os-release | grep 'VERSION_ID' | awk -F '=' '{print $2}')
-    
+
     echo $version
 }
 
 # 获取centos版本
-function get_centos_version()
-{
-    version=`cat /etc/redhat-release | awk '{print $4}' | awk -F . '{printf "%s",$1}'`
+function get_centos_version() {
+    version=$(cat /etc/redhat-release | awk '{print $4}' | awk -F . '{printf "%s",$1}')
     echo $version
 }
 
 # 判断是否是macos10.14版本
-function is_macos1014()
-{
+function is_macos1014() {
     product_version=$(sw_vers | grep ProductVersion)
     if [[ $product_version =~ "10.14" ]]; then
         echo 1
@@ -182,8 +169,7 @@ function is_macos1014()
 # }
 
 # 在ubuntu上源代码安装vim
-function compile_vim_on_ubuntu()
-{
+function compile_vim_on_ubuntu() {
     sudo apt-get install -y libncurses5-dev libncurses5 libgnome2-dev libgnomeui-dev \
         libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
         libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 lua5.1-dev
@@ -206,8 +192,7 @@ function compile_vim_on_ubuntu()
 }
 
 # 在debian上源代码安装vim
-function compile_vim_on_debian()
-{
+function compile_vim_on_debian() {
     sudo apt-get install -y libncurses5-dev libncurses5 libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 lua5.1-dev
 
     rm -rf ~/vim
@@ -228,8 +213,7 @@ function compile_vim_on_debian()
 }
 
 # 在parrot上源代码安装vim
-function compile_vim_on_parrot()
-{
+function compile_vim_on_parrot() {
     sudo apt-get install -y libncurses5-dev libncurses5 libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev python3-dev ruby-dev lua5.1 vim
 
     rm -rf ~/vim
@@ -250,15 +234,14 @@ function compile_vim_on_parrot()
 }
 
 # 在centos上源代码安装vim
-function compile_vim_on_centos()
-{
+function compile_vim_on_centos() {
     sudo yum install -y ruby ruby-devel lua lua-devel luajit \
         luajit-devel ctags git python python-devel \
         python34 python34-devel tcl-devel \
         perl perl-devel perl-ExtUtils-ParseXS \
         perl-ExtUtils-XSpp perl-ExtUtils-CBuilder \
         perl-ExtUtils-Embed libX11-devel ncurses-devel
-    
+
     rm -rf ~/vim
     git clone https://github.com/vim/vim.git ~/vim
     cd ~/vim
@@ -278,8 +261,7 @@ function compile_vim_on_centos()
 }
 
 # 安装mac平台必备软件
-function install_prepare_software_on_mac()
-{
+function install_prepare_software_on_mac() {
     xcode-select --install
 
     brew install vim gcc cmake ctags-exuberant ack
@@ -291,21 +273,18 @@ function install_prepare_software_on_mac()
 }
 
 # 安装FreeBSD必备软件
-function install_prepare_software_on_freebsd()
-{
+function install_prepare_software_on_freebsd() {
     sudo pkg install -y vim ctags automake gcc cmake p5-ack python git fontconfig
 }
 
 # 安装android平台必备软件
-function install_prepare_software_on_android()
-{
+function install_prepare_software_on_android() {
     pkg update
     pkg install -y git vim-python cmake python2 python ctags ack-grep ncurses-utils
 }
 
 # 安装alpine必备软件 需要更换源
-function install_prepare_software_on_alpine()
-{
+function install_prepare_software_on_alpine() {
     sed -i "s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g" /etc/apk/repositories
 
     version=$(get_alpine_version)
@@ -316,12 +295,11 @@ function install_prepare_software_on_alpine()
 }
 
 # 安装ubuntu必备软件
-function install_prepare_software_on_ubuntu()
-{
+function install_prepare_software_on_ubuntu() {
     sudo apt-get update
 
     version=$(get_ubuntu_version)
-    if [ $version -eq 14 ];then
+    if [ $version -eq 14 ]; then
         sudo apt-get install -y cmake3
     else
         sudo apt-get install -y cmake
@@ -329,8 +307,8 @@ function install_prepare_software_on_ubuntu()
 
     sudo apt-get install -y build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git
     sudo apt-get install -y universal-ctags || sudo apt-get install -y exuberant-ctags
-    
-    if [ $version -ge 18 ];then
+
+    if [ $version -ge 18 ]; then
         sudo apt-get install -y vim
     else
         compile_vim_on_ubuntu
@@ -338,8 +316,7 @@ function install_prepare_software_on_ubuntu()
 }
 
 # 安装ubuntu系必备软件
-function install_prepare_software_on_ubuntu_like()
-{
+function install_prepare_software_on_ubuntu_like() {
     sudo apt-get update
     sudo apt-get install -y cmake build-essential python python-dev python3-dev fontconfig libfile-next-perl ack-grep git
     sudo apt-get install -y universal-ctags || sudo apt-get install -y exuberant-ctags
@@ -347,8 +324,7 @@ function install_prepare_software_on_ubuntu_like()
 }
 
 # 安装debian必备软件
-function install_prepare_software_on_debian()
-{
+function install_prepare_software_on_debian() {
     sudo apt-get update
     sudo apt-get install -y cmake build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git
     sudo apt-get install -y universal-ctags || sudo apt-get install -y exuberant-ctags
@@ -356,18 +332,16 @@ function install_prepare_software_on_debian()
 }
 
 # 安装parrot必备软件
-function install_prepare_software_on_parrot()
-{
+function install_prepare_software_on_parrot() {
     sudo apt-get update
     sudo apt-get install -y cmake exuberant-ctags build-essential python python-dev python3-dev fontconfig libfile-next-perl ack git
     compile_vim_on_parrot
 }
 
 # 安装centos必备软件
-function install_prepare_software_on_centos()
-{
+function install_prepare_software_on_centos() {
     version=$(get_centos_version)
-    if [ $version -ge 8 ];then
+    if [ $version -ge 8 ]; then
         sudo dnf install -y epel-release
         sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel make cmake python2 python2-devel python3-devel fontconfig ack git
     else
@@ -377,31 +351,26 @@ function install_prepare_software_on_centos()
 }
 
 # 安装fedora必备软件
-function install_prepare_software_on_fedora()
-{
+function install_prepare_software_on_fedora() {
     sudo dnf install -y vim ctags automake gcc gcc-c++ kernel-devel cmake python-devel python3-devel fontconfig ack git
 }
 
 # 安装archlinux必备软件
-function install_prepare_software_on_archlinux()
-{
+function install_prepare_software_on_archlinux() {
     sudo pacman -S --noconfirm vim ctags automake gcc cmake python3 python2 ack git fontconfig
     sudo ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
 }
 
 # 安装gentoo必备软件
-function install_prepare_software_on_gentoo()
-{
+function install_prepare_software_on_gentoo() {
     install_software_on_gentoo app-editors/vim dev-util/ctags sys-devel/automake sys-devel/gcc dev-util/cmake sys-apps/ack dev-vcs/git media-libs/fontconfig
     su - -c "ln -s /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5" -s /bin/bash
 }
 
-function install_software_on_gentoo()
-{
+function install_software_on_gentoo() {
     pkgs=$*
     pkg_need_install=""
-    for pkg in ${pkgs}
-    do
+    for pkg in ${pkgs}; do
         if qlist -I | grep -Eq $pkg; then
             echo "$pkg is already installed."
         else
@@ -410,7 +379,7 @@ function install_software_on_gentoo()
     done
 
     if sudo -l | grep -Eq "emerge"; then
-        sudo emerge -v $pkg_need_install 
+        sudo emerge -v $pkg_need_install
     else
         echo "Need Root password:"
         su - -c "emerge -v $pkg_need_install" -s /bin/bash
@@ -418,14 +387,12 @@ function install_software_on_gentoo()
 }
 
 # 安装opensuse必备软件
-function install_prepare_software_on_opensuse()
-{
+function install_prepare_software_on_opensuse() {
     sudo zypper install -y vim ctags gcc gcc-c++ cmake python-devel python3-devel ack fontconfig git ncurses5-devel
 }
 
 # 拷贝文件
-function copy_files()
-{
+function copy_files() {
     rm -rf ~/.vimrc
     ln -s ${PWD}/.vimrc ~
 
@@ -450,27 +417,24 @@ function copy_files()
 }
 
 # 安装mac平台字体
-function install_fonts_on_mac()
-{
+function install_fonts_on_mac() {
     rm -rf ~/Library/Fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf
     cp ./fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/Library/Fonts
 }
 
 # 安装android平台字体
-function install_fonts_on_android()
-{
+function install_fonts_on_android() {
     rm -rf ~/.termux/font.ttf
     mkdir ~/.termux
     cp ./fonts/DejaVu.ttf ~/.termux/font.ttf
 
     # 刷新style
     REL="am broadcast --user 0 -a com.termux.app.reload_style com.termux"
-    $REL > /dev/null
+    $REL >/dev/null
 }
 
 # 安装linux平台字体
-function install_fonts_on_linux()
-{
+function install_fonts_on_linux() {
     mkdir -p ~/.local/share/fonts
     rm -rf ~/.local/share/fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf
     cp ./fonts/Droid\ Sans\ Mono\ Nerd\ Font\ Complete.otf ~/.local/share/fonts
@@ -479,54 +443,46 @@ function install_fonts_on_linux()
 }
 
 # 安装vim插件
-function install_vim_plugin()
-{
+function install_vim_plugin() {
     vim -c "PlugInstall" -c "q" -c "q"
 }
 
 # 安装ycm插件
-function install_ycm()
-{
+function install_ycm() {
     git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/plugged/YouCompleteMe
 
     cd ~/.vim/plugged/YouCompleteMe
-    distro=`get_linux_distro`
+
+    distro=$(get_linux_distro)
     echo "Warning: ycm no more support python2 !"
     echo "Compile ycm with python3."
-    {
-        # alpine 跳过该步骤
-        if [ ${distro} == "Alpine" ]; then
-            echo "##########################################"
-            echo "Apline Build, need without GLIBC."
-            echo "##########################################"
-            sed -i "273ilet g:ycm_clangd_binary_path='/usr/bin/clang'" ~/.vimrc
-            git submodule update --init --recursive
-            python3 ./install.py --clang-completer --verbose
-            return
-        fi
-    } || {
+    if [ ${distro} == "Alpine" ]; then
+        echo "##########################################"
+        echo "Apline Build, need without GLIBC."
+        echo "##########################################"
+        sed -i "273i let g:ycm_clangd_binary_path='/usr/bin/clang'" ~/.vimrc
         git submodule update --init --recursive
         python3 ./install.py --clang-completer --verbose
-    } || {
-        echo "##########################################"
-        echo "Build error, trying rebuild without Clang."
-        echo "##########################################"
+    else
+        # 非Alpine环境或安装失败后的重试
         git submodule update --init --recursive
         python3 ./install.py --clang-completer --verbose
+    fi || { #在次尝试编译
+        git submodule update --init --recursive
+        python3 ./install.py --clang-completer --verbose
+        echo "Compile ycm failed, try again."
     }
 }
 
 # 在android上安装ycm插件
-function install_ycm_on_android()
-{
+function install_ycm_on_android() {
     git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/plugged/YouCompleteMe
     cd ~/.vim/plugged/YouCompleteMe
     python3 ./install.py --clang-completer --system-libclang
 }
 
 # 打印logo
-function print_logo()
-{
+function print_logo() {
     color="$(tput setaf 6)"
     normal="$(tput sgr0)"
     printf "${color}"
@@ -545,8 +501,7 @@ function print_logo()
 }
 
 # 在mac平台安装vimplus
-function install_vimplus_on_mac()
-{
+function install_vimplus_on_mac() {
     backup_vimrc_and_vim
     install_prepare_software_on_mac
     copy_files
@@ -557,16 +512,14 @@ function install_vimplus_on_mac()
 }
 
 # 在FreeBSD上安装vimplus
-function install_vimplus_on_freebsd()
-{
+function install_vimplus_on_freebsd() {
     backup_vimrc_and_vim
     install_prepare_software_on_freebsd
     begin_install_vimplus
 }
 
 # 在android平台安装vimplus
-function install_vimplus_on_android()
-{
+function install_vimplus_on_android() {
     backup_vimrc_and_vim
     install_prepare_software_on_android
     copy_files
@@ -577,8 +530,7 @@ function install_vimplus_on_android()
 }
 
 # 开始安装vimplus
-function begin_install_vimplus()
-{
+function begin_install_vimplus() {
     copy_files
     install_fonts_on_linux
     install_ycm
@@ -587,80 +539,70 @@ function begin_install_vimplus()
 }
 
 # 在ubuntu上安装vimplus
-function install_vimplus_on_ubuntu()
-{
+function install_vimplus_on_ubuntu() {
     backup_vimrc_and_vim
     install_prepare_software_on_ubuntu
     begin_install_vimplus
 }
 
 # 在ubuntu系上安装vimplus
-function install_vimplus_on_ubuntu_like()
-{
+function install_vimplus_on_ubuntu_like() {
     backup_vimrc_and_vim
     install_prepare_software_on_ubuntu_like
     begin_install_vimplus
 }
 
 # 在debian上安装vimplus
-function install_vimplus_on_debian()
-{
+function install_vimplus_on_debian() {
     backup_vimrc_and_vim
     install_prepare_software_on_debian
     begin_install_vimplus
 }
 
 # 在parrot上安装vimplus
-function install_vimplus_on_parrot()
-{
+function install_vimplus_on_parrot() {
     backup_vimrc_and_vim
     install_prepare_software_on_parrot
     begin_install_vimplus
 }
 
 # 在centos上安装vimplus
-function install_vimplus_on_centos()
-{
+function install_vimplus_on_centos() {
     backup_vimrc_and_vim
     install_prepare_software_on_centos
     begin_install_vimplus
 }
 
 # 在fedora上安装vimplus
-function install_vimplus_on_fedora()
-{
+function install_vimplus_on_fedora() {
     backup_vimrc_and_vim
     install_prepare_software_on_fedora
     begin_install_vimplus
 }
 
 # 在archlinux上安装vimplus
-function install_vimplus_on_archlinux()
-{
+function install_vimplus_on_archlinux() {
     backup_vimrc_and_vim
     install_prepare_software_on_archlinux
     begin_install_vimplus
 }
 
 # 在Gentoo上安装vimplus
-function install_vimplus_on_gentoo()
-{
+function install_vimplus_on_gentoo() {
     backup_vimrc_and_vim
     install_prepare_software_on_gentoo
     begin_install_vimplus
 }
 
 # 在opensuse上安装vimplus
-function install_vimplus_on_opensuse()
-{
+function install_vimplus_on_opensuse() {
     backup_vimrc_and_vim
     install_prepare_software_on_opensuse
     begin_install_vimplus
 }
 
 # 在alpine上安装vimplus
-function install_vimplus_on_alpine()
-{
+function install_vimplus_on_alpine() {
     backup_vimrc_and_vim
     install_prepare_software_on_alpine
     begin_install_vimplus
@@ -670,9 +612,8 @@ function install_vimplus_on_alpine()
 }
 
 # 在linux平上台安装vimplus
-function install_vimplus_on_linux()
-{
-    distro=`get_linux_distro`
+function install_vimplus_on_linux() {
+    distro=$(get_linux_distro)
     echo "Linux distro: "${distro}
 
     if [ ${distro} == "Ubuntu" ]; then
@@ -713,16 +654,14 @@ function install_vimplus_on_linux()
 }
 
 # 获取当前时间戳
-function get_now_timestamp()
-{
-    cur_sec_and_ns=`date '+%s-%N'`
+function get_now_timestamp() {
+    cur_sec_and_ns=$(date '+%s-%N')
     echo ${cur_sec_and_ns%-*}
 }
 
 # main函数
-function main()
-{
-    begin=`get_now_timestamp`
+function main() {
+    begin=$(get_now_timestamp)
 
     type=$(uname)
     echo "Platform type: "${type}
@@ -743,9 +682,9 @@ function main()
         echo "Not support platform type: "${type}
     fi
 
-    end=`get_now_timestamp`
-    second=`expr ${end} - ${begin}`
-    min=`expr ${second} / 60`
+    end=$(get_now_timestamp)
+    second=$(expr ${end} - ${begin})
+    min=$(expr ${second} / 60)
     echo "It takes "${min}" minutes."
 }
 
